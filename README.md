@@ -2,7 +2,7 @@ Current development setup:
 
 1- up nats: /launcher docker compose up --build
 2- up sales db /data-ingestor-ms docker compose up --build
-3- up forecast db /forecast-access-ms docker compose up --build
+3- up forecast db & redis cache /forecast-access-ms docker compose up --build
 4- up auth mongo db /auth-ms docker compose up --build
 
 if new mongo db:
