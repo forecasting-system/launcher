@@ -4,3 +4,6 @@
 [submodule "auth-ms"]
 	path = auth-ms
 	url = git@github.com:forecasting-system/auth-ms.git
+[submodule "data-ingestor-ms"]
+	path = data-ingestor-ms
+	url = git@github.com:forecasting-system/data-ingestor-ms.git
