@@ -32,6 +32,8 @@ The system is composed of multiple services that communicate via NATS messaging.
 
 Some services follow Clean Architecture and TDD strictly; others adopt ideas from it where useful. The goal is clarity, testability, and separation of concerns, even if it adds some overhead in a small project.
 
+For simplicity, the ERP API simulator is in the same network as the forecasting services. In a real scenario this would be different. Having it in the same network allowed more experimentation with events.
+
 
 <img src="public/Flow_diagram.png" alt="Flow diagram" >
 
