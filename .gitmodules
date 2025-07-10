@@ -13,3 +13,6 @@
 [submodule "forecasting-access-ms"]
 	path = forecasting-access-ms
 	url = git@github.com:forecasting-system/forecasting-access-ms.git
+[submodule "client"]
+	path = client
+	url = git@github.com:forecasting-system/client.git
