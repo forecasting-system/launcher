@@ -7,3 +7,6 @@
 [submodule "data-ingestor-ms"]
 	path = data-ingestor-ms
 	url = git@github.com:forecasting-system/data-ingestor-ms.git
+[submodule "forecasting-ms"]
+	path = forecasting-ms
+	url = git@github.com:forecasting-system/forecasting-ms.git
