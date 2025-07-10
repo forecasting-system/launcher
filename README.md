@@ -69,6 +69,11 @@ Although some technology choices were made for experimentation, all services wer
 
 - Delivery: End-to-end implementation, from architecture and service design to deployment, was done independently, demonstrating initiative and execution.
 
+<figure>
+  <img src="public/client.png" alt="Screenshot of the forecasting" >
+  <figcaption style="text-align: center; font-size: 0.9em;">Client UI showing updated forecast results. We see an increase in sales in summer and a big winter peak.</figcaption>
+</figure>
+
 
 ## Disclaimer
 
