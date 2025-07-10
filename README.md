@@ -16,7 +16,7 @@ make sure there is no conflict with local mongodb
 6- /forecast-access-ms npm run start:dev
 7- /forecast-ms poetry run poe start
 8- /auth-ms npm run start:dev
-9- /client-ms npm run start:dev
+9- /client-gateway npm run start:dev
 
 
 If need to publish anything:
