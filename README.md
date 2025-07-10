@@ -1,4 +1,4 @@
-Current development setup:
+### Current development setup:
 
 1- up nats: /launcher docker compose up --build
 2- up sales db /data-ingestor-ms docker compose up --build
@@ -7,7 +7,7 @@ Current development setup:
 
 if new mongo db:
 ```bash
-docker exec -it mongo_auth_database mongosh
+docker exec -it forecasting_mongo_auth_database mongosh
 rs.initiate()
 ```
 make sure there is no conflict with local mongodb
@@ -37,3 +37,5 @@ nats sub internal.forecast.generated
 ## Infrastructure
 
 ## Setup and Deployment
+
+Note: provide a mongoDB

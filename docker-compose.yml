@@ -1,7 +1,169 @@
 services:
-  nats:
-    container_name: nats_server
+# =========================
+# NATS SERVER
+# =========================
+  forecasting-nats-server:
+    container_name: forecasting_nats_server
     image: nats:latest
     ports:
       - "4222:4222" 
       - "8222:8222"  
+
+# =========================
+# CLIENT GATEWAY SERVICES
+# =========================
+  forecasting-client-gateway:
+    container_name: forecasting_client_gateway
+    build:
+      context: ./client-gateway
+      dockerfile: dockerfile
+    image: forecasting-client-gateway:latest
+    ports:
+      - "${CLIENT_GATEWAY_PORT}:${CLIENT_GATEWAY_PORT}"
+    environment:
+      - PORT=${CLIENT_GATEWAY_PORT}
+      - NATS_SERVERS=${NATS_SERVERS}
+
+# =========================
+# AUTH-MS 
+# =========================
+  forecasting-auth-ms:
+    container_name: forecasting_auth_ms
+    build:
+      context: ./auth-ms
+      dockerfile: dockerfile
+    image: forecasting-auth-ms:latest
+    ports:
+      - "${AUTH_MS_PORT}:${AUTH_MS_PORT}"
+    environment:
+      - PORT=${AUTH_MS_PORT}
+      - NATS_SERVERS=${NATS_SERVERS}
+      - JWT_SECRET=${JWT_SECRET}
+      - DATABASE_URL=${MONGO_AUTH_DATABASE_URL}
+
+
+# =========================
+# SALES POSTGRESQL DB
+# =========================
+
+  forecasting-sales-db:
+    container_name: forecasting_sales_database
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${SALES_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${SALES_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${SALES_POSTGRES_DB}
+    volumes:
+      - salesdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+# =========================
+# INGESTOR-MS 
+# =========================
+  forecasting-data-ingestor-ms:
+    container_name: forecasting_data_ingestor_ms
+    build:
+      context: ./data-ingestor-ms
+      dockerfile: dockerfile
+    image: forecasting-data-ingestor-ms:latest
+    ports:
+      - "${DATA_INGESTOR_MS_PORT}:${DATA_INGESTOR_MS_PORT}"
+    environment:
+      - PORT=${DATA_INGESTOR_MS_PORT}
+      - NATS_SERVERS=${NATS_SERVERS}
+      - DATABASE_URL=${SQL_DATA_INGESTOR_DATABASE_URL}
+
+# =========================
+# FORECAST POSTGRESQL DB
+# =========================
+
+  forecasting-access-db:
+    container_name: forecasting_access_database
+    image: postgres:latest
+    ports:
+      - "5431:5432"
+    environment:
+      - POSTGRES_USER=${FORECAST_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${FORECAST_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${FORECAST_POSTGRES_DB}
+    volumes:
+      - forecastdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+# =========================
+# REDIS CACHE
+# =========================
+
+  forecasting-redis-cache:
+    container_name: forecasting_redis_cache
+    image: redis:7-alpine
+
+
+
+# =========================
+# FORECAST-ACCESS-MS 
+# =========================
+  forecasting-forecast-access-ms:
+    container_name: forecasting_forecast_access_ms
+    build:
+      context: ./forecasting-access-ms
+      dockerfile: dockerfile
+    image: forecasting-forecast-access-ms:latest
+    ports:
+      - "${FORECAST_ACCESS_MS_PORT}:${FORECAST_ACCESS_MS_PORT}"
+    environment:
+      - PORT=${FORECAST_ACCESS_MS_PORT}
+      - NATS_SERVERS=${NATS_SERVERS}
+      - DATABASE_URL=${SQL_FORECAST_ACCESS_DATABASE_URL}
+      - CACHE_SERVER=${CACHE_SERVER}
+
+# =========================
+# FORECAST-MS 
+# =========================
+  forecasting-forecast-ms:
+    container_name: forecasting_forecast_ms
+    build:
+      context: ./forecasting-ms
+      dockerfile: dockerfile
+    image: forecasting-forecast-ms:latest
+    ports:
+      - "${FORECAST_MS_PORT}:${FORECAST_MS_PORT}"
+    environment:
+      - PORT=${FORECAST_MS_PORT}
+      - EVENT_SERVER=${EVENT_SERVER}
+      - MESSAGING_SERVER=${MESSAGING_SERVER}
+      - NATS_URL=${NATS_SERVERS}
+
+
+#========================
+# CLIENT
+#========================
+
+  forecasting-client:
+    container_name: forecasting_client
+    build:
+      context: ./client
+      dockerfile: dockerfile
+    image: forecasting-client:latest
+    ports:
+      - "5173:80"
+    environment:
+      - VITE_DASHBOARD_BACKEND=${GATEWAY_URL}
+      - VITE_SOCKET_URL=${GATEWAY_SOCKET_URL}
+
+volumes:
+  salesdata:
+  forecastdata:
+
