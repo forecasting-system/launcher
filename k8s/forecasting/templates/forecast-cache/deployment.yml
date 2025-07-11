@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: forecasting-redis-cache
+  name: forecasting-redis-cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forecasting-redis-cache
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: forecasting-redis-cache
+    spec:
+      containers:
+      - image: redis:7-alpine
+        name: redis
+        resources: {}
+status: {}

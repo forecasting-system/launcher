@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: forecasting-nats-server
+  name: forecasting-nats-server
+spec:
+  ports:
+  - name: "4222"
+    port: 4222
+    nodePort: 31222
+    protocol: TCP
+    targetPort: 4222
+  selector:
+    app: forecasting-nats-server
+  type: NodePort
+status:
+  loadBalancer: {}

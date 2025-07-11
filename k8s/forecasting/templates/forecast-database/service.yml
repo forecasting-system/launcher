@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: forecasting-forecast-database
+  name: forecasting-forecast-database
+spec:
+  ports:
+  - name: "5431"
+    port: 5431
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app: forecasting-forecast-database
+  type: ClusterIP
+status:
+  loadBalancer: {}

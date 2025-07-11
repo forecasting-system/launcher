@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: forecasting-forecast-database
+  name: forecasting-forecast-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forecasting-forecast-database
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: forecasting-forecast-database
+    spec:
+      containers:
+      - image: postgres:latest
+        name: postgres
+        resources: {}
+        ports:
+          - containerPort: 5432
+        env:
+          - name: POSTGRES_USER
+            value: "postgres"
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: forecasting-secrets
+                key: POSTGRES_PASSWORD_FORECAST
+          - name: POSTGRES_DB
+            value: "forecastdb"
+        volumeMounts:
+          - name: forecast-database-pvc
+            mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: forecast-database-pvc
+          persistentVolumeClaim:
+            claimName: forecast-database-pvc
+status: {}

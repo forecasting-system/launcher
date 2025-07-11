@@ -105,3 +105,25 @@ docker run --rm -it --network host synadia/nats-box
 ```bash
 nats pub external.sales.created '{"date": "2010-10-01", "value":1600}'
 ```
+
+For Kubernetes setup:
+```bash
+kubectl create secret generic forecasting-secrets \
+  --from-literal=JWT_SECRET=secret here \
+  --from-literal=DATABASE_URL_AUTH_MS='mongodb+srv://mongo:password!@cluster0.vbyls1l.mongodb.net/users?retryWrites=true&w=majority&appName=Cluster0' \
+  --from-literal=DATABASE_URL_INGESTOR='postgresql://postgres:password@forecasting-sales-database:5432/salesdb' \
+  --from-literal=DATABASE_URL_ACCESS='postgresql://postgres:password@forecasting-forecast-database:5431/forecastdb' \
+  --from-literal=POSTGRES_PASSWORD_FORECAST=password \
+  --from-literal=POSTGRES_PASSWORD_SALES=password
+  ```
+
+If serving in Kubernetes, you can use the following command for forward ports:
+```bash
+kubectl port-forward service/forecasting-client-gateway 3000:3000
+```
+
+NATS command for testing new sales entries:
+```bash
+nats pub -s nats://localhost:31222 external.sales.created '{"date": "2011-01-
+01", "value":3600}'
+```

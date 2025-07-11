@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: forecasting-data-ingestor-ms
+  name: forecasting-data-ingestor-ms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forecasting-data-ingestor-ms
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: forecasting-data-ingestor-ms
+    spec:
+      containers:
+      - image: forecasting-data-ingestor-ms:latest
+        name: forecasting-data-ingestor-ms
+        resources: {}
+        env:
+        - name: PORT
+          value: "3002"
+        - name: NATS_SERVERS
+          value: "nats://forecasting-nats-server"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: forecasting-secrets
+              key: DATABASE_URL_INGESTOR
+        imagePullPolicy: Never
+status: {}

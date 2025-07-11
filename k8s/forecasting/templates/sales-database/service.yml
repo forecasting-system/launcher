@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: forecasting-sales-database
+  name: forecasting-sales-database
+spec:
+  ports:
+  - name: "5432"
+    port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app: forecasting-sales-database
+  type: ClusterIP
+status:
+  loadBalancer: {}

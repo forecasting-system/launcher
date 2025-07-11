@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: forecasting-nats-server
+  name: forecasting-nats-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forecasting-nats-server
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: forecasting-nats-server
+    spec:
+      containers:
+      - image: nats:latest
+        name: nats
+        resources: {}
+status: {}

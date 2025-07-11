@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: forecasting-client
+  name: forecasting-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forecasting-client
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: forecasting-client
+    spec:
+      containers:
+      - image: forecasting-client:latest
+        name: forecasting-client
+        resources: {}
+        imagePullPolicy: Never
+status: {}

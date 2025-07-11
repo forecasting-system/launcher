@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: forecasting-sales-database
+  name: forecasting-sales-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forecasting-sales-database
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: forecasting-sales-database
+    spec:
+      containers:
+      - image: postgres:latest
+        name: postgres
+        resources: {}
+        ports:
+          - containerPort: 5432
+        env:
+          - name: POSTGRES_USER
+            value: "postgres"
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: forecasting-secrets
+                key: POSTGRES_PASSWORD_SALES
+          - name: POSTGRES_DB
+            value: "salesdb"
+        volumeMounts:
+          - name: sales-database-pvc
+            mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: sales-database-pvc
+          persistentVolumeClaim:
+            claimName: sales-database-pvc
+status: {}

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: forecasting-client-gateway
+  name: forecasting-client-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forecasting-client-gateway
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: forecasting-client-gateway
+    spec:
+      containers:
+      - image: forecasting-client-gateway:latest
+        name: forecasting-client-gateway
+        resources: {}
+        env:
+        - name: PORT
+          value: "3000"
+        - name: NATS_SERVERS
+          value: "nats://forecasting-nats-server"
+        imagePullPolicy: Never
+status: {}
