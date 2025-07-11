@@ -58,6 +58,7 @@ Although some technology choices were made for experimentation, all services wer
 
 <img src="public/Technology_diagram.jpg" alt="Technologies" >
 
+Note, the Ruby service was not implemented. For demonstration purposes, an event can be published from a NATS box.
 
 ## Key Takeaways
 
@@ -93,4 +94,14 @@ git submodule update --init --recursive
 
 ```bash
 docker compose up --build
+```
+
+Once up and running, the ERP message can be simulated with a publish done from a NATS box:
+
+```bash
+docker run --rm -it --network host synadia/nats-box
+```
+
+```bash
+nats pub external.sales.created '{"date": "2010-10-01", "value":1600}'
 ```
